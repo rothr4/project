@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using WebHookLib.Package;
+﻿using WebHookLib.Package;
 using WebHookLib.Package.Mattermost.DataTemplete;
 
 namespace WebHookLib
@@ -42,32 +36,27 @@ namespace WebHookLib
         }
 
 
-
         public string ServerURL { get; private set; }
 
         public int ServerPort { get; private set; }
-        
 
-        public void IncomingWebHook(string botName, string contents, string webHookId)
+        public void PostMessage(string botName, string contents, string webHookId)
         {
-            var PostObj = new SendBotMessage();
-            string PostData = JsonManager.GetInstance.Serialize(PostObj.GetObject(botName, contents));
+            var PostObj = new PostMessageDefault(botName, contents);
+            string PostData = JsonManager.GetInstance.Serialize(PostObj.GetJsonObject());
             string RoomURL = string.Format("{0}hooks/{1}", GetAppServerURL(), webHookId);
 
             HttpManager.GetInstance.HttpPostRequest(PostData, RoomURL);
         }
 
-        public void IncomingWebHook(string botName, string contents, string webHookId, string iconUrl)
+        public void PostMessage(string botName, string contents, string webHookId, string iconUrl)
         {
-            var PostObj = new SendBotMessage();
-            string PostData = JsonManager.GetInstance.Serialize(PostObj.GetObject(botName, contents, iconUrl));
+            var PostObj = new PostMessageAddIcon(botName, contents, iconUrl);
+            string PostData = JsonManager.GetInstance.Serialize(PostObj.GetJsonObject());
             string RoomURL = string.Format("{0}hooks/{1}", GetAppServerURL(), webHookId);
 
             HttpManager.GetInstance.HttpPostRequest(PostData, RoomURL);
         }
-
-
-
 
         private string GetAppServerURL()
         {

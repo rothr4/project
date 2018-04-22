@@ -15,15 +15,15 @@ namespace WebHookLib.Package.Mattermost.DataTemplete
         public string icon_url { get; private set; }
 
 
-        public PostMessageAddIcon(string botName, string message, string iconUrl)
+        public PostMessageAddIcon(string botName, string iconUrl)
         {
             this.username = botName;
-            this.text = message;
             this.icon_url = iconUrl;
         }
 
-        public object GetJsonObject()
+        public object GetJsonObject(string message)
         {
+            this.text = message;
             return this;
         }
     }

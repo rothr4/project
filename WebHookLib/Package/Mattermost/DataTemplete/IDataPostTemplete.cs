@@ -2,6 +2,6 @@
 {
     interface IDataPostTemplete
     {
-        object GetJsonObject();
+        object GetJsonObject(string message);
     }
 }

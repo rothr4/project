@@ -26,8 +26,8 @@ namespace WebHookLib
 
         public void PostMessage(string botName, string contents, string webHookId)
         {
-            var PostObj = new PostMessageDefault(botName, contents);
-            string PostData = JsonManager.GetInstance.Serialize(PostObj.GetJsonObject());
+            var PostObj = new PostMessageDefault(botName);
+            string PostData = JsonManager.GetInstance.Serialize(PostObj.GetJsonObject(contents));
             string RoomURL = string.Format("{0}hooks/{1}", ServerURL, webHookId);
 
             HttpManager.GetInstance.HttpPostRequest(PostData, RoomURL);
@@ -35,9 +35,17 @@ namespace WebHookLib
 
         public void PostMessage(string botName, string contents, string webHookId, string iconUrl)
         {
-            var PostObj = new PostMessageAddIcon(botName, contents, iconUrl);
-            string PostData = JsonManager.GetInstance.Serialize(PostObj.GetJsonObject());
+            var PostObj = new PostMessageAddIcon(botName, iconUrl);
+            string PostData = JsonManager.GetInstance.Serialize(PostObj.GetJsonObject(contents));
             string RoomURL = string.Format("{0}hooks/{1}", ServerURL, webHookId);
+
+            HttpManager.GetInstance.HttpPostRequest(PostData, RoomURL);
+        }
+
+        public void PostMessage(MattermostBot bot, string contents)
+        {
+            string PostData = JsonManager.GetInstance.Serialize(bot.GetTest(contents));
+            string RoomURL = string.Format("{0}hooks/{1}", ServerURL, bot.WebHookId);
 
             HttpManager.GetInstance.HttpPostRequest(PostData, RoomURL);
         }

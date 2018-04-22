@@ -12,14 +12,14 @@ namespace WebHookLib.Package.Mattermost.DataTemplete
         public string text { get; private set; }
 
 
-        public PostMessageDefault(string botName, string message)
+        public PostMessageDefault(string botName)
         {
             this.username = botName;
-            this.text = message;
         }
 
-        public object GetJsonObject()
+        public object GetJsonObject(string message)
         {
+            this.text = message;
             return this;
         }
     }
